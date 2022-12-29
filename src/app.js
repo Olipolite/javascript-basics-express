@@ -1,12 +1,9 @@
 const express = require('express');
 
-// strings
 const { sayHello, firstCharacters, firstCharacter } = require('./lib/strings');
 
-// numbers
 const { add, subtract, multiply, divide, remainder } = require('./lib/numbers');
 
-// array
 const {
   getNthElement,
   arrayToCSVString,
@@ -15,7 +12,6 @@ const {
   removeNthElement2,
 } = require('./lib/arrays');
 
-// booleans
 const { negate, truthiness, isOdd, startsWith } = require('./lib/booleans');
 
 const app = express();
@@ -50,29 +46,30 @@ app.get('/strings/first-characters/:string', (req, res) => {
 // Numbers
 
 app.get('/numbers/add/:a/and/:b', (req, res) => {
-  const a = parseInt(req.params.a);
-  const b = parseInt(req.params.b);
+  const a = parseInt(req.params.a, 10);
+  const b = parseInt(req.params.b, 10);
   if (Number.isNaN(a) || Number.isNaN(b)) {
     return res.status(400).json({ error: 'Parameters must be valid numbers.' });
   }
+
   return res.status(200).json({ result: add(a, b) });
 });
 
 app.get('/numbers/subtract/:a/from/:b', (req, res) => {
-  const a = parseInt(req.params.a);
-  const b = parseInt(req.params.b);
+  const a = parseInt(req.params.a, 10);
+  const b = parseInt(req.params.b, 10);
   if (Number.isNaN(a) || Number.isNaN(b)) {
     return res.status(400).json({ error: 'Parameters must be valid numbers.' });
   }
+
   return res.status(200).json({ result: subtract(b, a) });
 });
 
 app.post('/numbers/multiply', (req, res) => {
-  const { a } = req.body;
-  const { b } = req.body;
-
+  const { a, b } = req.body;
   const n1 = parseInt(a, 10);
   const n2 = parseInt(b, 10);
+
   if (!a || !b) {
     res.status(400).json({ error: 'Parameters "a" and "b" are required.' });
   }
@@ -83,8 +80,7 @@ app.post('/numbers/multiply', (req, res) => {
 });
 
 app.post('/numbers/divide', (req, res) => {
-  const { a } = req.body;
-  const { b } = req.body;
+  const { a, b } = req.body;
 
   const n1 = parseInt(a, 10);
   const n2 = parseInt(b, 10);
@@ -105,9 +101,7 @@ app.post('/numbers/divide', (req, res) => {
 });
 
 app.post('/numbers/remainder', (req, res) => {
-  const { a } = req.body;
-  const { b } = req.body;
-
+  const { a, b } = req.body;
   const n1 = parseInt(a, 10);
   const n2 = parseInt(b, 10);
 
@@ -129,53 +123,42 @@ app.post('/numbers/remainder', (req, res) => {
 // Arrays
 
 app.post('/arrays/element-at-index/:a', (req, res) => {
-  const { array } = req.body;
-  const { a } = req.params;
-  res.status(200).json({ result: getNthElement(a, array) });
+  res.status(200).json({ result: getNthElement(req.params.a, req.body.array) });
 });
 
 app.post('/arrays/to-string', (req, res) => {
-  const { array } = req.body;
-  res.status(200).json({ result: arrayToCSVString(array) });
+  res.status(200).json({ result: arrayToCSVString(req.body.array) });
 });
 
 app.post('/arrays/append', (req, res) => {
-  const { array } = req.body;
-  const { value } = req.body;
+  const { array, value } = req.body;
   addToArray(value, array);
 
   res.status(200).json({ result: array });
 });
 
 app.post('/arrays/starts-with-vowel', (req, res) => {
-  const { array } = req.body;
-  const newArray = elementsStartingWithAVowel(array);
+  const newArray = elementsStartingWithAVowel(req.body.array);
   res.status(200).json({ result: newArray });
 });
 
 app.post('/arrays/remove-element', (req, res) => {
-  const { array } = req.body;
-  const index = req.query.index || 0;
-
-  const newArray = removeNthElement2(index, array);
+  const newArray = removeNthElement2(req.query.index || 0, req.body.array);
   res.status(200).json({ result: newArray });
 });
 
 // Booleans
 
 app.post('/booleans/negate', (req, res) => {
-  const { value } = req.body;
-  res.status(200).json({ result: negate(value) });
+  res.status(200).json({ result: negate(req.body.value) });
 });
 
 app.post('/booleans/truthiness', (req, res) => {
-  const { value } = req.body;
-  res.status(200).json({ result: truthiness(value) });
+  res.status(200).json({ result: truthiness(req.body.value) });
 });
 
 app.get('/booleans/is-odd/:number', (req, res) => {
-  const { number } = req.params;
-  const newNumber = parseInt(number, 10);
+  const newNumber = parseInt(req.params.number, 10);
   if (Number.isNaN(newNumber)) {
     res.status(400).json({ error: 'Parameter must be a number.' });
   }
@@ -183,12 +166,11 @@ app.get('/booleans/is-odd/:number', (req, res) => {
 });
 
 app.get('/booleans/:string/starts-with/:letter', (req, res) => {
-  const { letter } = req.params;
-  const { string } = req.params;
-  if (letter.length >= 2) {
-    res.status(400).json({ error: 'Parameter "character" must be a single character.' });
+  const { letter, string } = req.params;
+  if (letter.length === 1) {
+    res.status(200).json({ result: startsWith(letter, string) });
   }
-  res.status(200).json({ result: startsWith(letter, string) });
+  res.status(400).json({ error: 'Parameter "character" must be a single character.' });
 });
 
 module.exports = app;

@@ -19,19 +19,11 @@ function one(a, b) {
 }
 
 function truthiness(a) {
-  if (a) {
-    return true;
-  }
-
-  return false;
+  return !!a;
 }
 
 function isEqual(a, b) {
-  if (a === b) {
-    return true;
-  }
-
-  return false;
+  return a === b;
 }
 
 function isGreaterThan(a, b) {

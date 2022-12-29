@@ -1,7 +1,7 @@
 const createPerson = (name, age) => {
   const Person = {
-    name: name,
-    age: age
+    name,
+    age,
   };
   return Person;
 };
@@ -22,22 +22,15 @@ const hasProperty = (property, object) => {
 };
 
 const isOver65 = person => {
-  if (person.age > 65) {
-    return true;
-  }
-  return false;
+  return person.age > 65;
 };
 
 const getAges = people => {
-  const ages = people.map(element => {
-    return element.age;
-  });
-  return ages;
+  return people.map(element => element.age);
 };
 
 const findByName = (name, people) => {
-  const knark = people.find(element => element.name === name);
-  return knark;
+  return people.find(element => element.name === name);
 };
 
 const findHondas = cars => {
@@ -45,22 +38,24 @@ const findHondas = cars => {
 };
 
 const averageAge = people => {
-  const knark = people.map(element => element.age);
-  const sum = knark.reduce((total, number) => {
+  const age = people.map(element => element.age);
+  const sum = age.reduce((total, number) => {
     return total + number;
   });
+
   return sum / people.length;
 };
 
 const createTalkingPerson = (name, age) => {
-  const cringe = {
-    name: name,
-    age: age,
-    introduce: function(knark) {
-      return `Hi ${knark}, my name is ${name} and I am ${age}!`;
-    }
+  const person = {
+    name,
+    age,
+    introduce(personName) {
+      return `Hi ${personName}, my name is ${name} and I am ${age}!`;
+    },
   };
-  return cringe;
+
+  return person;
 };
 
 module.exports = {
@@ -73,5 +68,5 @@ module.exports = {
   findByName,
   findHondas,
   averageAge,
-  createTalkingPerson
+  createTalkingPerson,
 };

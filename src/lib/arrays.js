@@ -40,17 +40,8 @@ const reverseWordsInArray = strings => {
     element = element.join('');
     strings[index] = element;
   });
+
   return strings;
-  /*
-  const newArray = []
-  strings.forEach(element => {
-    element = element.split('');
-    element = element.reverse();
-    element = element.join('');
-    newArray.push(element);
-  });
-  return newArray;
-  */
 };
 
 function onlyEven(numbers) {
@@ -59,7 +50,6 @@ function onlyEven(numbers) {
       return element;
     }
   });
-  console.log(evenNumbers);
   return evenNumbers;
 }
 
@@ -81,12 +71,14 @@ const elementsStartingWithAVowel = strings => {
       }
     }
   });
+
   return newArray;
 };
 
 const removeSpaces = string => {
-  const bajs = string.replaceAll(' ', '');
-  return bajs;
+  const noSpace = string.replaceAll(' ', '');
+
+  return noSpace;
 };
 
 const sumNumbers = numbers => {
